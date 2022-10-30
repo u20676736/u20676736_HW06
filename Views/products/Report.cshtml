@@ -1,0 +1,136 @@
+﻿@model PagedList.IPagedList<u20676736_HW06.Models.product>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Report";
+}
+<head>
+    <script src="~/Scripts/Chart.min.js"></script>
+    <h2>Report</h2>
+</head>
+    @{
+        var myChart = new Chart(width: 600, height: 400);
+    }   
+    
+    <!--chart below-->
+    <div id="chart_container" style="border: 2px solid;border-color:dodgerblue;border-radius:20px;padding:1px;height:auto;width:auto">
+        <!--Create Canvas-->
+        <canvas id="bar_chart" height="300" width="400"> </canvas>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+    <!--Pdf stuff-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <script>
+        $("#cmd").prop("disabled", true);
+        //for saving all
+        $('#btn-submit').click(function () {
+
+            var ctx = $('#bar_chart');
+        }
+
+        debugger
+        $.ajax({
+            url: '/Home/GetChartData',
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ "quantity": quantityfrominput }),
+            success: function (data) {
+                console.log(data);
+                //begin rendering
+
+                let region = [];
+                let rev_value = [];
+                try {
+                    data.map((item) => {
+                        rev_value.push(item.ProductQuantity);
+                        region.push(item.ProductName);
+                    });
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: [...region],
+                            datasets: [{
+                                label: 'Regions',
+                                data: [...rev_value],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)',
+                                    'rgba(121, 194, 50, 0.2)',
+                                    'rgba(150, 127,23, 0.2)',
+                                    'rgba(188, 113, 12, 0.2)',
+                                    'rgba(0, 0, 88, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)',
+                                    'rgba(255, 159, 64, 1)',
+                                    'rgba(255, 159, 64, 1)',
+                                    'rgba(255, 159, 64, 1)',
+                                    'rgba(255, 159, 64, 1)',
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                    debugger
+                    Swal.fire('Chart Loaded', 'Data is Found!', 'success');
+                    debugger
+                    $("#cmd").prop("disabled", false);
+                }
+                catch (error) {
+                    console.log(error);
+                }
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                Swal.fire({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!'
+                });
+                //totally done
+            }
+        });
+        var ChartData = 0;
+        int[] ChartData = new int[]
+        {
+
+                db.order_items.Where(x => x.product.category_id == 6 && x.order.order_date.Month == 1).ToList().Sum(x => x.quantity),
+                db.order_items.Where(x => x.product.category_id == 6 && x.order.order_date.Month == 2).ToList().Sum(x => x.quantity),
+                db.order_items.Where(x => x.product.category_id == 6 && x.order.order_date.Month == 3).ToList().Sum(x => x.quantity),
+                db.order_items.Where(x => x.product.category_id == 6 && x.order.order_date.Month == 4).ToList().Sum(x => x.quantity),
+                db.order_items.Where(x => x.product.category_id == 6 && x.order.order_date.Month == 5).ToList().Sum(x => x.quantity),
+                db.order_items.Where(x => x.product.category_id == 6 && x.order.order_date.Month == 6).ToList().Sum(x => x.quantity),
+                db.order_items.Where(x => x.product.category_id == 6 && x.order.order_date.Month == 7).ToList().Sum(x => x.quantity),
+                db.order_items.Where(x => x.product.category_id == 6 && x.order.order_date.Month == 8).ToList().Sum(x => x.quantity),
+                db.order_items.Where(x => x.product.category_id == 6 && x.order.order_date.Month == 9).ToList().Sum(x => x.quantity),
+                db.order_items.Where(x => x.product.category_id == 6 && x.order.order_date.Month == 10).ToList().Sum(x => x.quantity),
+                db.order_items.Where(x => x.product.category_id == 6 && x.order.order_date.Month == 11).ToList().Sum(x => x.quantity),
+                db.order_items.Where(x => x.product.category_id == 6 && x.order.order_date.Month == 12).ToList().Sum(x => x.quantity),
+        };
+
+
+            });
+    </script>
+    <!--Scripts Section-->
